@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyurtma</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background: #083234; color: white; padding: 24px 20px; min-height: 100vh; }
+        h2 { text-align: center; font-size: 22px; margin-bottom: 24px; color: #3ECFCF; }
+        .field { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+        input { width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(62,207,207,0.3); background: rgba(255,255,255,0.08); color: white; font-size: 16px; outline: none; }
+        .product-badge { background: rgba(62,207,207,0.12); border: 1px solid rgba(62,207,207,0.3); border-radius: 8px; padding: 10px 14px; font-size: 14px; color: #3ECFCF; margin-bottom: 20px; }
+        .term-btn { flex: 1; padding: 12px; border: 1px solid #3ECFCF; background: transparent; color: #3ECFCF; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .term-btn.active { background: #3ECFCF; color: #083234; }
+        #price-result { background: rgba(62,207,207,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div id="form-section">
+    <h2>Ariza qoldirish</h2>
+    <div class="product-badge" id="product-badge" style="display:none">📦 <span id="product-name-display"></span></div>
+
+    <div class="field">
+        <label>Muddatni tanlang</label>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button type="button" class="term-btn" onclick="setTerm(6)" id="term6">6 oy</button>
+            <button type="button" class="term-btn" onclick="setTerm(9)" id="term9">9 oy</button>
+            <button type="button" class="term-btn" onclick="setTerm(12)" id="term12">12 oy</button>
+        </div>
+    </div>
+
+    <div id="price-result">
+        <div style="font-size: 14px; color: #3ECFCF;">Jami: <span id="total-price">0</span> so'm</div>
+        <div style="font-size: 18px; font-weight: bold; margin-top: 5px;">Oylik: <span id="monthly-price">0</span> so'm</div>
+    </div>
+
+    <div class="field"><label>Ismingiz</label><input type="text" id="name" placeholder="Ism Familiya"></div>
+    <div class="field"><label>Telefon raqamingiz</label><input type="tel" id="phone" placeholder="+998 90 123 45 67"></div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productName = decodeURIComponent(urlParams.get('product') || '');
+    const basePrice = parseInt(urlParams.get('price')) || 0;
+    let selectedMonths = 0;
+
+    if (productName) {
+        document.getElementById('product-name-display').textContent = productName;
+        document.getElementById('product-badge').style.display = 'block';
+    }
+
+    function setTerm(months) {
+        selectedMonths = months;
+        document.querySelectorAll('.term-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('term' + months).classList.add('active');
+        
+        const markups = {6: 0.20, 9: 0.28, 12: 0.37};
+        const total = Math.floor(basePrice * (1 + markups[months]));
+        const monthly = Math.floor(total / months);
+        
+        document.getElementById('total-price').textContent = total.toLocaleString();
+        document.getElementById('monthly-price').textContent = monthly.toLocaleString();
+        document.getElementById('price-result').style.display = 'block';
+    }
+
+    tg.MainButton.setText("Buyurtmani yuborish");
+    tg.MainButton.show();
+    
+    tg.onEvent('mainButtonClicked', async function () {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        
+        if (!name || !phone || selectedMonths === 0) {
+            alert("Iltimos, barcha maydonlarni to'ldiring va muddatni tanlang!");
+            return;
+        }
+
+        // Ma'lumotni botga yuboramiz
+        const data = {
+            product: productName,
+            months: selectedMonths,
+            monthly: document.getElementById('monthly-price').textContent,
+            name: name,
+            phone: phone
+        };
+        
+        tg.sendData(JSON.stringify(data));
+        tg.close();
+    });
+</script>
+</body>
+</html>
