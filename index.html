@@ -90,7 +90,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             chat_id: 1306354017, 
-            text: `🔔 *Yangi buyurtma!*\n\n📦 *Mahsulot:* ${productName}\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`, 
+            text = `🔔 *Yangi buyurtma!*\n\n📦 *Mahsulot:* ${product}\n📅 *Muddat:* ${months} oy\n💰 *Oylik:* ${monthly} so'm\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`; 
             parse_mode: 'Markdown' 
         })
     });
