@@ -74,26 +74,25 @@
     tg.MainButton.show();
     
     tg.onEvent('mainButtonClicked', async function () {
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        
-        if (!name || !phone || selectedMonths === 0) {
-            alert("Iltimos, barcha maydonlarni to'ldiring va muddatni tanlang!");
-            return;
-        }
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    
+    // Adminlar ID ro'yxati (bu yerda shart emas, lekin kod ishlashi uchun kerak)
+    const ADMIN_IDS = [1306354017]; 
+    const text = `🔔 *Yangi buyurtma!*\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`;
 
-        // Ma'lumotni botga yuboramiz
-        const data = {
-            product: productName,
-            months: selectedMonths,
-            monthly: document.getElementById('monthly-price').textContent,
-            name: name,
-            phone: phone
-        };
-        
-        tg.sendData(JSON.stringify(data));
-        tg.close();
-    });
+    // Faqat adminlarga yuborish
+    for(let id of ADMIN_IDS) {
+        await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: id, text: text, parse_mode: 'Markdown' })
+        });
+    }
+    
+    // Mijozga bot orqali emas, shunchaki oyna yopilganini ko'rsatish
+    tg.close();
+});
 </script>
 </body>
 </html>
