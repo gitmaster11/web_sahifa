@@ -79,31 +79,45 @@
     tg.MainButton.show();
     
     tg.onEvent('mainButtonClicked', async function () {
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
+    const name = document.getElementById('name').value.trim(); // .trim() bo'sh joylarni olib tashlaydi
+    const phone = document.getElementById('phone').value.trim();
     
-    // ... validatsiya qismi (o'zgarishsiz qolsin)
+    // 1. TEKSHIRUV: Maydonlar bo'shligini tekshirish
+    if (name === "" || phone === "" || selectedMonths === 0) {
+        alert("Iltimos, ism va telefon raqamingizni kiriting!");
+        return; // Kod shu yerda to'xtaydi va xabar yuborilmaydi
+    }
+
+    // Agar hammasi joyida bo'lsa, davom etamiz...
+    const product = productName;
+    const months = selectedMonths;
+    const monthly = document.getElementById('monthly-price').textContent;
+    
+    const text = `🔔 *Yangi buyurtma!*\n\n` +
+                 `📦 *Mahsulot:* ${product}\n` +
+                 `📅 *Muddat:* ${months} oy\n` +
+                 `💰 *Oylik to'lov:* ${monthly} so'm\n` +
+                 `👤 *Ismi:* ${name}\n` +
+                 `📞 *Tel:* ${phone}`;
 
     // Xabarni yuborish
-    await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
+    const response = await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             chat_id: 1306354017, 
-            text: `🔔 *Yangi buyurtma!*\n\n` +
-             `📦 *Mahsulot:* ${productName}\n` +
-             `📅 *Muddat:* ${selectedMonths} oy\n` +
-             `💰 *Oylik to'lov:* ${document.getElementById('monthly-price').textContent}\n` +
-             `👤 *Ismi:* ${name}\n` +
-             `📞 *Tel:* ${phone}`,
+            text: text, 
             parse_mode: 'Markdown' 
         })
     });
 
-    // TUGMANI YASHIRISH VA XABARNI KO'RSATISH
-    tg.MainButton.hide(); // Tugmani yashiramiz
-    document.getElementById('form-section').style.display = 'none'; // Formani yashiramiz
-    document.getElementById('success-message').style.display = 'block'; // Muvaffaqiyat xabarini ko'rsatamiz
+    if (response.ok) {
+        tg.MainButton.hide();
+        document.getElementById('form-section').style.display = 'none';
+        document.getElementById('success-message').style.display = 'block';
+    } else {
+        alert("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+    }
 });
 </script>
 </body>
