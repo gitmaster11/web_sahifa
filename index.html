@@ -76,12 +76,19 @@
     tg.onEvent('mainButtonClicked', async function () {
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
+    const product = productName; // Bu URL dan olingan mahsulot nomi
+    const months = selectedMonths;
+    const monthly = document.getElementById('monthly-price').textContent;
     
-    // Adminlar ID ro'yxati (bu yerda shart emas, lekin kod ishlashi uchun kerak)
-    const ADMIN_IDS = [1306354017]; 
-    const text = `🔔 *Yangi buyurtma!*\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`;
+    if (!name || !phone || months === 0) {
+        alert("Iltimos, barcha maydonlarni to'ldiring!");
+        return;
+    }
 
-    // Faqat adminlarga yuborish
+    const ADMIN_IDS = [1306354017];
+    // Barcha ma'lumotlarni text'ga qo'shdik
+    const text = `🔔 *Yangi buyurtma!*\n\n📦 *Mahsulot:* ${product}\n📅 *Muddat:* ${months} oy\n💰 *Oylik:* ${monthly} so'm\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`;
+
     for(let id of ADMIN_IDS) {
         await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
             method: 'POST',
@@ -90,7 +97,8 @@
         });
     }
     
-    // Mijozga bot orqali emas, shunchaki oyna yopilganini ko'rsatish
+    // Mijozga xabar yuborish uchun biz botga 'data' yuboramiz
+    tg.sendData(JSON.stringify({ status: "success" }));
     tg.close();
 });
 </script>
