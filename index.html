@@ -41,6 +41,11 @@
     <div class="field"><label>Ismingiz</label><input type="text" id="name" placeholder="Ism Familiya"></div>
     <div class="field"><label>Telefon raqamingiz</label><input type="tel" id="phone" placeholder="+998 90 123 45 67"></div>
 </div>
+<div id="success-message" style="display:none; text-align:center; padding: 50px 20px;">
+    <div style="font-size: 50px; margin-bottom: 20px;">✅</div>
+    <h2 style="color: #3ECFCF;">Buyurtmangiz qabul qilindi!</h2>
+    <p style="color: rgba(255,255,255,0.7); margin-top: 10px;">Operatorlarimiz tez orada siz bilan bog'lanishadi.</p>
+</div>
 
 <script>
     const tg = window.Telegram.WebApp;
@@ -76,30 +81,24 @@
     tg.onEvent('mainButtonClicked', async function () {
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
-    const product = productName; // Bu URL dan olingan mahsulot nomi
-    const months = selectedMonths;
-    const monthly = document.getElementById('monthly-price').textContent;
     
-    if (!name || !phone || months === 0) {
-        alert("Iltimos, barcha maydonlarni to'ldiring!");
-        return;
-    }
+    // ... validatsiya qismi (o'zgarishsiz qolsin)
 
-    const ADMIN_IDS = [1306354017];
-    // Barcha ma'lumotlarni text'ga qo'shdik
-    const text = `🔔 *Yangi buyurtma!*\n\n📦 *Mahsulot:* ${product}\n📅 *Muddat:* ${months} oy\n💰 *Oylik:* ${monthly} so'm\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`;
+    // Xabarni yuborish
+    await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            chat_id: 1306354017, 
+            text: `🔔 *Yangi buyurtma!*\n\n📦 *Mahsulot:* ${productName}\n👤 *Ismi:* ${name}\n📞 *Tel:* ${phone}`, 
+            parse_mode: 'Markdown' 
+        })
+    });
 
-    for(let id of ADMIN_IDS) {
-        await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: id, text: text, parse_mode: 'Markdown' })
-        });
-    }
-    
-    // Mijozga xabar yuborish uchun biz botga 'data' yuboramiz
-    tg.sendData(JSON.stringify({ status: "success" }));
-    tg.close();
+    // TUGMANI YASHIRISH VA XABARNI KO'RSATISH
+    tg.MainButton.hide(); // Tugmani yashiramiz
+    document.getElementById('form-section').style.display = 'none'; // Formani yashiramiz
+    document.getElementById('success-message').style.display = 'block'; // Muvaffaqiyat xabarini ko'rsatamiz
 });
 </script>
 </body>
