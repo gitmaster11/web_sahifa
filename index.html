@@ -56,9 +56,9 @@
     const urlParams = new URLSearchParams(window.location.search);
     const productName = decodeURIComponent(urlParams.get('product') || '');
     const basePrice = parseInt(urlParams.get('price')) || 0;
-    const monthlyPayment = document.getElementById('monthly-price').textContent;
-    const months = selectedMonths;
-    const totalFinalPrice = parseInt(monthlyPayment.replace(/\s/g, '')) * months;
+    // const monthlyPayment = document.getElementById('monthly-price').textContent;
+    // const months = selectedMonths;
+    // const totalFinalPrice = parseInt(monthlyPayment.replace(/\s/g, '')) * months;
     let selectedMonths = 0;
 
     if (productName) {
