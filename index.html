@@ -60,6 +60,7 @@
 
     if (productName) {
         document.getElementById('product-name-display').textContent = productName;
+        document.getElementById('display-price').textContent = new Intl.NumberFormat('uz-UZ').format(basePrice);
         document.getElementById('product-badge').style.display = 'block';
     }
 
@@ -74,7 +75,6 @@
         
         document.getElementById('total-price').textContent = total.toLocaleString();
         document.getElementById('monthly-price').textContent = monthly.toLocaleString();
-        document.getElementById('display-price').textContent = new Intl.NumberFormat('uz-UZ').format(basePrice);
         document.getElementById('price-result').style.display = 'block';
     }
 
