@@ -98,13 +98,14 @@
     const product = productName;
     const months = selectedMonths;
     const monthly = document.getElementById('monthly-price').textContent;
+    const total = document.getElementById('total-price').textContent;
     
     const text = `🔔 *Yangi buyurtma!*\n\n` +
                  `📦 *Mahsulot:* ${product}\n` +
                  `💰 *Mahsulot narxi:* ${document.getElementById('display-price').textContent} so'm\n` + // Mana bu qatorni qo'shdik
                  `📅 *Muddat:* ${months} oy\n` +
                  `💰 *Oylik to'lov:* ${monthly} so'm\n` +
-                 `💰 *YAKUNIY NARX:* ${monthly * months} so'm\n\n` +
+                 `💰 *YAKUNIY NARX:* ${total} so'm\n\n` +
                  `👤 *Ismi:* ${name}\n` +
                  `📞 *Tel:* ${phone}`;
 
