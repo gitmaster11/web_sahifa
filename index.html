@@ -37,8 +37,10 @@
         <div style="font-size: 14px; color: #3ECFCF;">Jami: <span id="total-price">0</span> so'm</div>
         <div style="font-size: 18px; font-weight: bold; margin-top: 5px;">Oylik: <span id="monthly-price">0</span> so'm</div>
     </div>
-
-    <div class="field"><label>Ismingiz</label><input type="text" id="name" placeholder="Ism Familiya"></div>
+    <div id="price-display" style="color: #3ECFCF; font-size: 20px; margin-bottom: 15px; font-weight: bold;">
+    Tannarxi: <span id="display-price">0</span> so'm
+</div>
+    <div class="field"><label>Ismingiz</label><input type="text" id="name" placeholder="Ismingiz"></div>
     <div class="field"><label>Telefon raqamingiz</label><input type="tel" id="phone" placeholder="+998 90 123 45 67"></div>
 </div>
 <div id="success-message" style="display:none; text-align:center; padding: 50px 20px;">
@@ -72,6 +74,7 @@
         
         document.getElementById('total-price').textContent = total.toLocaleString();
         document.getElementById('monthly-price').textContent = monthly.toLocaleString();
+        document.getElementById('display-price').textContent = new Intl.NumberFormat('uz-UZ').format(basePrice);
         document.getElementById('price-result').style.display = 'block';
     }
 
@@ -95,6 +98,7 @@
     
     const text = `🔔 *Yangi buyurtma!*\n\n` +
                  `📦 *Mahsulot:* ${product}\n` +
+                 `💰 *Mahsulot narxi:* ${document.getElementById('display-price').textContent} so'm\n` + // Mana bu qatorni qo'shdik
                  `📅 *Muddat:* ${months} oy\n` +
                  `💰 *Oylik to'lov:* ${monthly} so'm\n` +
                  `👤 *Ismi:* ${name}\n` +
