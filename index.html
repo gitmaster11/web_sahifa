@@ -145,11 +145,14 @@
         tg.MainButton.hide();
         document.getElementById('form-section').style.display = 'none';
         document.getElementById('success-message').style.display = 'block';
+        window.Telegram.WebApp.close();
     } else {
         alert("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+        window.Telegram.WebApp.close();
     }
+    
 });
-    window.Telegram.WebApp.close();
+    
 </script>
 </body>
 </html>
