@@ -146,9 +146,10 @@
         document.getElementById('form-section').style.display = 'none';
         document.getElementById('success-message').style.display = 'block';
     } else {
-        alert("Xatolik yuz berdi, qaytadan urinib ko'ring.");
-    }
-});
+        const errorData = await response.json();
+        console.error("Xatolik:", errorData);  // ← Console'da ko'rish
+        alert(`❌ Xatolik: ${errorData.description}`);  // ← Xatoning tafsili
+}
 </script>
 </body>
 </html>
