@@ -119,11 +119,12 @@
                  `📞 *Tel:* ${phone}`;
 
     // Xabarni yuborish
+    const ADMIN_CHAT_ID = -100446249086; 
     const response = await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-            chat_id: -1004462490868, 
+            chat_id: ADMIN_CHAT_ID,
             text: text, 
             parse_mode: 'Markdown' 
         })
