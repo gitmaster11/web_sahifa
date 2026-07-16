@@ -139,14 +139,13 @@
         })
     });
     
-
+    const errorData = await response.json();
 
     if (response.ok) {
         tg.MainButton.hide();
         document.getElementById('form-section').style.display = 'none';
         document.getElementById('success-message').style.display = 'block';
     } else {
-        const errorData = await response.json();
         alert(`❌ Xatolik: ${errorData.description}`);  // ← Xatoning tafsili
 }
 </script>
