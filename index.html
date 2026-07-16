@@ -147,7 +147,6 @@
         document.getElementById('success-message').style.display = 'block';
     } else {
         const errorData = await response.json();
-        console.error("Xatolik:", errorData);  // ← Console'da ko'rish
         alert(`❌ Xatolik: ${errorData.description}`);  // ← Xatoning tafsili
 }
 </script>
