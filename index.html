@@ -56,6 +56,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const productName = decodeURIComponent(urlParams.get('product') || '');
     const basePrice = parseInt(urlParams.get('price')) || 0;
+    const user_id = urlParams.get('user_id');
     // const monthlyPayment = document.getElementById('monthly-price').textContent;
     // const months = selectedMonths;
     // const totalFinalPrice = parseInt(monthlyPayment.replace(/\s/g, '')) * months;
@@ -109,16 +110,35 @@
                  `👤 *Ismi:* ${name}\n` +
                  `📞 *Tel:* ${phone}`;
 
+    const text2 =`📦 *Mahsulot:* ${product}\n` +
+                 `💰 *Mahsulot narxi:* ${document.getElementById('display-price').textContent} so'm\n` + // Mana bu qatorni qo'shdik
+                 `📅 *Muddat:* ${months} oy\n` +
+                 `💰 *Oylik to'lov:* ${monthly} so'm\n` +
+                 `💰 *YAKUNIY NARX:* ${total} so'm\n\n` +
+                 `👤 *Ismi:* ${name}\n` +
+                 `📞 *Tel:* ${phone}`;
+
     // Xabarni yuborish
     const response = await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-            chat_id: 1306354017, 
+            chat_id: -5106534459, 
             text: text, 
             parse_mode: 'Markdown' 
         })
     });
+    const response2 = await fetch(`https://api.telegram.org/bot8827872980:AAHvvV97pfvG5zCCfC6Tw0ghOitW-avxa4Q/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            chat_id: user_id, 
+            text: text2,
+            parse_mode: 'Markdown' 
+        })
+    });
+    
+
 
     if (response.ok) {
         tg.MainButton.hide();
