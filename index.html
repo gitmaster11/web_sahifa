@@ -86,38 +86,50 @@
     tg.MainButton.show();
     
     tg.onEvent('mainButtonClicked', async function () {
+    // 1. Dastlabki tekshiruv
     const name = document.getElementById('name').value.trim();
     const phone = document.getElementById('phone').value.trim();
     
-    if (name === "" || phone === "" || selectedMonths === 0) {
-        alert("Iltimos, ism va telefon raqamingizni kiriting!");
+    if (selectedMonths === 0) {
+        alert("Iltimos, muddatni tanlang!");
+        return;
+    }
+    
+    if (name === "" || phone === "") {
+        alert("Ism va telefon raqamni kiriting!");
         return;
     }
 
-    const payload = {
-        name: name,
-        phone: phone,
-        product: productName,
-        months: selectedMonths,
-        monthly: document.getElementById('monthly-price').textContent,
-        total: document.getElementById('total-price').textContent,
-        base_price: document.getElementById('display-price').textContent,
-        user_id: user_id
-    };
+    // 2. Fetch so'rovi (Endi xatoni ushlaymiz)
+    try {
+        const payload = {
+            name: name,
+            phone: phone,
+            product: productName,
+            months: selectedMonths,
+            monthly: document.getElementById('monthly-price').textContent,
+            total: document.getElementById('total-price').textContent,
+            base_price: document.getElementById('display-price').textContent,
+            user_id: user_id
+        };
 
-    const response = await fetch("http://204.168.173.39:8000/api/order", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
+        const response = await fetch("http://204.168.173.39:8000/api/order", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-    if (response.ok) {
-        tg.MainButton.hide();
-        document.getElementById('form-section').style.display = 'none';
-        document.getElementById('success-message').style.display = 'block';
-        setTimeout(() => { Telegram.WebApp.close(); }, 2000);
-    } else {
-        alert("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+        // Agar server 200 (OK) qaytarsa
+        if (response.ok) {
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+            tg.MainButton.hide();
+            setTimeout(() => { tg.close(); }, 2000);
+        } else {
+            alert("Server xatosi: " + response.status);
+        }
+    } catch (err) {
+        alert("Ulanish xatosi: " + err.message);
     }
 });
 
