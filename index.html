@@ -113,7 +113,8 @@
             user_id: user_id
         };
 
-        const response = await fetch("http://204.168.173.39:8000/api/order", {
+        // Eski qatorni o'chiring va yangisini qo'ying:
+        const response = await fetch("https://hurricane-fwd-informative-thread.trycloudflare.com/api/order", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
