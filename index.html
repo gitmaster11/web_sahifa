@@ -64,7 +64,7 @@
     let selectedMonths = 0;
 
     if (productName) {
-        document.getElementById('product-name-display').textContent = productName;
+        document.getElementById('product-name-display' ).textContent = productName;
         document.getElementById('display-price').textContent = new Intl.NumberFormat('uz-UZ').format(basePrice);
         document.getElementById('product-badge').style.display = 'block';
     }
