@@ -73,9 +73,13 @@
         selectedMonths = months;
         document.querySelectorAll('.term-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById('term' + months).classList.add('active');
+        const multipliers = { 
+        6: 1.1545833, 
+        9: 1.2208333, 
+        12: 1.2870833 
+        };
         
-        const markups = {6: 0.1568, 9: 0.224, 12: 0.2912};
-        const total = Math.floor(basePrice * (1 + markups[months]));
+        const total = Math.floor(basePrice * multipliers[months]);
         const monthly = Math.floor(total / months);
         
         document.getElementById('total-price').textContent = total.toLocaleString();
@@ -85,7 +89,8 @@
 
     tg.MainButton.setText("Buyurtmani yuborish");
     tg.MainButton.show();
-    
+
+
     tg.onEvent('mainButtonClicked', async function () {
     // 1. Dastlabki tekshiruv
     const name = document.getElementById('name').value.trim();
